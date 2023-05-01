@@ -1,0 +1,12 @@
+syntax = "proto3";
+package lifedefied.lifedefied;
+
+import "gogoproto/gogo.proto";
+import "lifedefied/lifedefied/params.proto";
+
+option go_package = "LifeDeFied/x/lifedefied/types";
+
+// GenesisState defines the lifedefied module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+}

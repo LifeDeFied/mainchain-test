@@ -1,0 +1,7 @@
+syntax = "proto3";
+package lifedefied.lifedefied;
+
+option go_package = "LifeDeFied/x/lifedefied/types";
+
+// Msg defines the Msg service.
+service Msg {}
