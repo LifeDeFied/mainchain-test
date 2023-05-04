@@ -20,7 +20,7 @@ Ignite CLI has scaffolded a React.js-based web app in the `react` directory. Run
 ```
 cd react
 npm install
-npm run serve
+npm run dev
 ```
 
 ## Release
