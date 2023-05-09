@@ -1,6 +1,6 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 
-import IgntHeader from "../components/IgntHeader";
+import IgntHeader from "../components/header/IgntHeader";
 import Assets from "../views/Assets";
 import Staking from "../views/Staking";
 import Market from "../views/Market";

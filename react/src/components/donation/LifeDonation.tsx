@@ -1,6 +1,6 @@
-import { useAddressContext } from "../def-hooks/addressContext";
+import { useAddressContext } from "../../def-hooks/addressContext";
 import { IgntTabs } from "@ignt/react-library";
-import IgntSend from "./IgntSend";
+import IgntSend from "../send/IgntSend";
 import "./LifeDonation.css";
 
 interface IgntTransferProps {

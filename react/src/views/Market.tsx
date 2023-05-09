@@ -1,4 +1,4 @@
-import IgntCrud from "../components/IgntCrud";
+import IgntCrud from "../components/crudMethod/IgntCrud";
 
 export default function Market() {
   return (

@@ -1,5 +1,5 @@
 import { IgntLink } from "@ignt/react-library";
-import IgntAcc from "./IgntAcc";
+import IgntAcc from "../accounts/IgntAcc";
 import logo from "./igntheaderlogo.gif";
 import "./IgntHeader.css";
 
