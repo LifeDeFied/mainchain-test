@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import IgntAssets from "../components/IgntAssets";
+import IgntAssets from "../components/assets/IgntAssets";
 import IgntTransactions from "../components/transactions/IgntTransactions";
 import IgntTransfer from "../components/transfer/IgntTransfer";
 import LifeDonation from "../components/donation/LifeDonation";

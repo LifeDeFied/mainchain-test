@@ -3,7 +3,7 @@
 import { useTransactions } from "../../def-hooks/useTransactions";
 import { IgntTxArrowIcon, IgntArrowIcon } from "@ignt/react-library";
 import dayjs from "dayjs";
-import IgntDenom from "./IgntDenom";
+import IgntDenom from "../denom/IgntDenom";
 import { useMemo } from "react";
 import cx from "classnames";
 import "./IgntTransactions.css"; 

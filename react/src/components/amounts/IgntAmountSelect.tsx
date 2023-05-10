@@ -5,7 +5,7 @@ import { useDenomContext } from "../../def-hooks/denomContext";
 import { Amount } from "../../utils/interfaces";
 import { IgntAddIcon, IgntSearchIcon, IgntModal, IgntClearIcon } from "@ignt/react-library";
 import IgntAmountInputRow from "./IgntAmountInputRow";
-import IgntDenom from "../IgntDenom";
+import IgntDenom from "../denom/IgntDenom";
 
 interface IgntAmountSelectProps {
   className?: string;
