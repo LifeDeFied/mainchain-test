@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+
 import { useEffect, useState } from "react";
 import useKeplr from "../../def-hooks/useKeplr";
+import useMetamask from "../../def-hooks/useMetaMask";
 import { useDispatchWalletContext, useWalletContext } from "../../def-hooks/walletContext";
 import { useClient } from "../../hooks/useClient";
 
@@ -17,6 +19,7 @@ import {
   IgntExternalArrowIcon,
   IgntSpinner,
 } from "@ignt/react-library";
+
 import IgntAccDropdown from "./IgntAccDropdown";
 
 export interface State {
@@ -28,7 +31,8 @@ export interface State {
 
 export default function IgntAcc() {
   const { connectToKeplr, isKeplrAvailable, getKeplrAccParams } = useKeplr();
-
+  const { connectToMetamask, isMetamaskAvailable, getMetamaskAccParams } = useMetamask();
+  
   const client = useClient();
   const walletStore = useWalletContext();
   const walletActions = useDispatchWalletContext();
@@ -57,8 +61,24 @@ export default function IgntAcc() {
       getKeplrData().catch(console.error);
     }
   }, [chainId]);
+
+  const tryToConnectToMetaMask = (): void => {
+    setState((oldState) => ({ ...oldState, modalPage: "connect" }));
+
+    const onMetamaskConnect = (): void => {
+      setState((oldState) => ({ ...oldState, connectWalletModal: false, modalPage: "connect" }));
+      
+    };
+    const onMetamaskError = (): void => {
+      setState((oldState) => ({ ...oldState, modalPage: "error" }));
+    };
+      connectToMetamask(onMetamaskConnect, onMetamaskError);
+
+  };
+
   const tryToConnectToKeplr = (): void => {
     setState((oldState) => ({ ...oldState, modalPage: "connect" }));
+    
 
     const onKeplrConnect = (): void => {
       setState((oldState) => ({ ...oldState, connectWalletModal: false, modalPage: "connect" }));
@@ -68,7 +88,6 @@ export default function IgntAcc() {
       setState((oldState) => ({ ...oldState, modalPage: "error" }));
     };
 
-    connectToKeplr(onKeplrConnect, onKeplrError);
   };
 
   const getAccName = (): string => {
@@ -82,7 +101,7 @@ export default function IgntAcc() {
     setState((oldState) => ({ ...oldState, accountDropdown: false }));
     walletActions.signOut();
   };
-
+  
   return (
     <div className="sp-acc">
       {wallet ? (
@@ -195,9 +214,16 @@ export default function IgntAcc() {
         footer={
           state.modalPage === "connect" ? (
             <div className="my-3">
-              <IgntButton aria-label="Connect Keplr" type="primary" onClick={tryToConnectToKeplr}>
-                Connect Keplr
-              </IgntButton>
+              <div>
+                <IgntButton aria-label="Connect Keplr" type="primary"   onClick={tryToConnectToMetaMask}>
+                  Connect Metamask
+                </IgntButton>
+              </div>
+              <div>
+                <IgntButton aria-label="Connect Keplr" type="primary" >
+                  Connect Keplr
+                </IgntButton>
+              </div>
             </div>
           ) : (
             state.modalPage === "error" && (
