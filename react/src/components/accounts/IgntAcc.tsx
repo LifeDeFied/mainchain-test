@@ -4,7 +4,7 @@
 
 import { useEffect, useState } from "react";
 import useKeplr from "../../def-hooks/useKeplr";
-import useMetamask from "../../def-hooks/useMetaMask";
+import useMetaMask from "../../def-hooks/useMetaMask";
 import { useDispatchWalletContext, useWalletContext } from "../../def-hooks/walletContext";
 import { useClient } from "../../hooks/useClient";
 
@@ -31,7 +31,7 @@ export interface State {
 
 export default function IgntAcc() {
   const { connectToKeplr, isKeplrAvailable, getKeplrAccParams } = useKeplr();
-  const { connectToMetamask, isMetamaskAvailable, getMetamaskAccParams } = useMetamask();
+  const { connectToMetaMask, isMetaMaskAvailable, getMetaMaskAccParams } = useMetaMask();
   
   const client = useClient();
   const walletStore = useWalletContext();
@@ -65,14 +65,14 @@ export default function IgntAcc() {
   const tryToConnectToMetaMask = (): void => {
     setState((oldState) => ({ ...oldState, modalPage: "connect" }));
 
-    const onMetamaskConnect = (): void => {
+    const onMetaMaskConnect = (): void => {
       setState((oldState) => ({ ...oldState, connectWalletModal: false, modalPage: "connect" }));
       
     };
-    const onMetamaskError = (): void => {
+    const onMetaMaskError = (): void => {
       setState((oldState) => ({ ...oldState, modalPage: "error" }));
     };
-      connectToMetamask(onMetamaskConnect, onMetamaskError);
+      connectToMetaMask(onMetaMaskConnect, onMetaMaskError);
 
   };
 
@@ -80,7 +80,7 @@ export default function IgntAcc() {
     setState((oldState) => ({ ...oldState, modalPage: "connect" }));
     
 
-    const onKeplrConnect = (): void => {
+    const onKeplrConnect= (): void => {
       setState((oldState) => ({ ...oldState, connectWalletModal: false, modalPage: "connect" }));
     };
 
@@ -88,6 +88,7 @@ export default function IgntAcc() {
       setState((oldState) => ({ ...oldState, modalPage: "error" }));
     };
 
+    connectToKeplr(onKeplrConnect, onKeplrError);
   };
 
   const getAccName = (): string => {
@@ -155,7 +156,6 @@ export default function IgntAcc() {
         header={
           state.modalPage === "connect" ? (
             <div className="flex items-center flex-col my-3">
-              <IgntKeplrIcon className="text-[48px]" />
               {isKeplrAvailable ? <h3 className="text-2xl font-bold">Connect your wallet</h3> : <h3>Install Keplr</h3>}
             </div>
           ) : state.modalPage === "connecting" ? (
@@ -176,11 +176,7 @@ export default function IgntAcc() {
           <div className="max-w-xs text-center text-sm my-4 mx-auto">
             {state.modalPage === "connect" ? (
               <div>
-                {isKeplrAvailable ? (
-                  <p>Connect your Keplr wallet via the Keplr browser extension to use this app.</p>
-                ) : (
-                  <p>Install & connect your Keplr wallet via the Keplr browser extension to use this app.</p>
-                )}
+                {isKeplrAvailable}
               </div>
             ) : state.modalPage === "connecting" ? (
               <div>
@@ -213,17 +209,20 @@ export default function IgntAcc() {
         }
         footer={
           state.modalPage === "connect" ? (
-            <div className="my-3">
+            <div className="flex items-center flex-col my-3">
+              <IgntKeplrIcon className="text-[48px]" />
               <div>
-                <IgntButton aria-label="Connect Keplr" type="primary"   onClick={tryToConnectToMetaMask}>
-                  Connect Metamask
-                </IgntButton>
-              </div>
-              <div>
-                <IgntButton aria-label="Connect Keplr" type="primary" >
+                <IgntButton aria-label="Connect Keplr" type="primary" onClick={tryToConnectToKeplr}>
                   Connect Keplr
                 </IgntButton>
               </div>
+              <br></br>
+              <IgntKeplrIcon className="text-[48px]" />
+              <div>
+                <IgntButton aria-label="Connect MetaMask" type="primary" onClick={tryToConnectToMetaMask}>
+                  Connect MetaMask
+                </IgntButton>
+                </div>
             </div>
           ) : (
             state.modalPage === "error" && (

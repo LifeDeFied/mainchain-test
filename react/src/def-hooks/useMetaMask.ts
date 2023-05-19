@@ -1,6 +1,7 @@
 import { useClient } from "../hooks/useClient";
 import { useDispatchWalletContext } from "./walletContext";
 import Web3 from "web3";
+
 const ethereum = window.ethereum;
 
 declare global {
@@ -13,7 +14,7 @@ export default function () {
   const client = useClient();
   const walletStore = useDispatchWalletContext();
   
-  const connectToMetamask = async (onSuccessCb: () => void, onErrorCb: () => void) => {
+  const connectToMetaMask = async (onSuccessCb: () => void, onErrorCb: () => void) => {
     if (typeof ethereum !== 'undefined') {
         console.log('MetaMask is installed!');
       } else {
@@ -30,21 +31,21 @@ export default function () {
     }
   };
 
-  const isMetamaskAvailable = !!window.ethereum;
+  const isMetaMaskAvailable = !!window.ethereum;
 
   const getOfflineSigner = (chainId: string) => window.ethereum.getOfflineSigner(chainId);
 
-  const getMetamaskAccParams = async (chainId: string) => await window.ethereum.getKey(chainId);
+  const getMetaMaskAccParams = async (chainId: string) => await window.ethereum.getKey(chainId);
 
   const listenToAccChange = (cb: EventListener) => {
     client.on("signer-changed", cb);
   };
 
   return {
-    connectToMetamask,
-    isMetamaskAvailable,
+    connectToMetaMask,
+    isMetaMaskAvailable,
     getOfflineSigner,
-    getMetamaskAccParams,
+    getMetaMaskAccParams,
     listenToAccChange,
   };
 }
