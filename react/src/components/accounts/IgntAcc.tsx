@@ -98,6 +98,7 @@ export default function IgntAcc() {
       return "";
     }
   };
+  
   const disconnect = (): void => {
     setState((oldState) => ({ ...oldState, accountDropdown: false }));
     walletActions.signOut();

@@ -1,6 +1,9 @@
 import { useClient } from "../hooks/useClient";
 import { useDispatchWalletContext } from "./walletContext";
 import Web3 from "web3";
+import { ethers } from 'ethers';
+import { detectEthereumProvider } from '@metamask/detect-provider';
+
 
 const ethereum = window.ethereum;
 
@@ -15,17 +18,21 @@ export default function () {
   const walletStore = useDispatchWalletContext();
   
   const connectToMetaMask = async (onSuccessCb: () => void, onErrorCb: () => void) => {
+    await window.ethereum.enable(); 
+    
+
     if (typeof ethereum !== 'undefined') {
-        console.log('MetaMask is installed!');
-      } else {
-        console.error('Please install MetaMask!');
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        
+      } else {       
+         console.error('Please install MetaMask!');
       }
     try {
         onSuccessCb
         const request = await ethereum.request({ method: 'eth_requestAccounts' });
         const accounts = await ethereum.request({ method: 'eth_accounts' });
         const account = accounts[0];
-        console.log(request)
+        
     } catch (e) {
         onErrorCb()
     }
