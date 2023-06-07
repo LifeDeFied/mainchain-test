@@ -27,6 +27,7 @@ export interface State {
   connectWalletModal: boolean;
   accountDropdown: boolean;
   keplrParams: { name: string; bech32Address: string };
+  metamaskParams: {name: string; bech32Address: string};
 }
 
 export default function IgntAcc() {
@@ -47,12 +48,16 @@ export default function IgntAcc() {
     connectWalletModal: false,
     accountDropdown: false,
     keplrParams: { name: "", bech32Address: "" },
+    metamaskParams: {name: "", bech32Address: ""}
   };
 
   const [state, setState] = useState(initialState);
   useEffect(() => {
     const getKeplrData = async () => {
       const { name, bech32Address } = await getKeplrAccParams(chainId);
+      const getAcc = await getKeplrAccParams(chainId)
+      console.log(JSON.stringify(getAcc))
+      
       const keplrParams = { name, bech32Address };
 
       setState((oldState) => ({ ...oldState, keplrParams }));
@@ -60,14 +65,15 @@ export default function IgntAcc() {
     if (chainId != "") {
       getKeplrData().catch(console.error);
     }
+    
+    
   }, [chainId]);
 
   const tryToConnectToMetaMask = (): void => {
     setState((oldState) => ({ ...oldState, modalPage: "connect" }));
 
     const onMetaMaskConnect = (): void => {
-      setState((oldState) => ({ ...oldState, connectWalletModal: false, modalPage: "connect" }));
-      
+      setState((oldState) => ({ ...oldState, connectWalletModal: true, modalPage: "connect" }));
     };
     const onMetaMaskError = (): void => {
       setState((oldState) => ({ ...oldState, modalPage: "error" }));
@@ -88,7 +94,8 @@ export default function IgntAcc() {
       setState((oldState) => ({ ...oldState, modalPage: "error" }));
     };
 
-    connectToKeplr(onKeplrConnect, onKeplrError);
+     connectToKeplr(onKeplrConnect, onKeplrError);
+     console.log("error:"+ connectToKeplr)
   };
 
   const getAccName = (): string => {
