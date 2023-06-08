@@ -50,17 +50,28 @@ export default function IgntAcc() {
   };
 
   const [state, setState] = useState(initialState);
-  useEffect(() => {
-    const getKeplrData = async () => {
-      const { name, bech32Address } = await getKeplrAccParams(chainId);
-      const keplrParams = { name, bech32Address };
 
-      setState((oldState) => ({ ...oldState, keplrParams }));
+  useEffect(() => {
+    const getData = async () => {
+      const [keplrData, metaMaskData] = await Promise.all([
+        getKeplrAccParams(chainId),
+        getMetaMaskAccParams(chainId)
+      ]);
+
+      const newState = {
+        ...state,
+        keplrParams: { name: keplrData.name, bech32Address: keplrData.bech32Address },
+        metamaskParams: { name: metaMaskData.name, bech32Address: metaMaskData.bech32Address }
+      };
+
+      setState(newState);
     };
-    if (chainId != "") {
-      getKeplrData().catch(console.error);
+
+    if (chainId !== "") {
+      getData().catch(console.error);
     }
-  }, [chainId]);
+  }, [chainId, setState, state]);
+
 
   const tryToConnectToMetaMask = (): void => {
     setState((oldState) => ({ ...oldState, modalPage: "connect" }));
@@ -177,6 +188,7 @@ export default function IgntAcc() {
             {state.modalPage === "connect" ? (
               <div>
                 {isKeplrAvailable}
+                {isMetaMaskAvailable}
               </div>
             ) : state.modalPage === "connecting" ? (
               <div>

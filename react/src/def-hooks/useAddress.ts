@@ -11,25 +11,30 @@ export const useAddress = () => {
   const getAddress = async () => {
     let rawAddress = "";
     let shortAddress = "";
-
+  
     if (typeof window.ethereum !== "undefined") {
       // Metamask is present
       await window.ethereum.request({ method: 'eth_requestAccounts' });
       const accounts = await window.ethereum.request({ method: 'eth_accounts' });
       rawAddress = accounts[0];
-      shortAddress = rawAddress.substring(0, 10) + "..." + rawAddress.slice(-4);
     } else if (client.signer) {
       // Use the client's signer object
-      const [{ address: rawAddress }] = await client.signer.getAccounts();
-      shortAddress = rawAddress.substring(0, 10) + "..." + rawAddress.slice(-4);
+      const [{ address }] = await client.signer.getAccounts();
+      rawAddress = address;
+    } else {
+      // Keplr is present
+      const { address: rawAddr } = await client.signer.getAccounts();
+      rawAddress = rawAddr;
     }
+  
+    shortAddress = rawAddress.substring(0, 10) + "..." + rawAddress.slice(-4);
     
     return {
       address: rawAddress,
       shortAddress: shortAddress,
     };
   };
-
+  
   client.on("signer-changed", async () => {
     const newAddress = await getAddress();
     setAddress((oldAddress) => {

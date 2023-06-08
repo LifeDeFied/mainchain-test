@@ -173,7 +173,7 @@ export default function IgntAccDropdown(props: IgntAccDropdownProps) {
           
           <div className="flex justify-between items-center">
             <span> EVMOs </span>
-            <span> {awsConnected ? "connected" : "disconnected"} </span>
+            <span> {evmosConnected ? "connected" : "disconnected"} </span>
           </div>
         </div>
       )}{" "}

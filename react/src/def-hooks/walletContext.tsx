@@ -27,21 +27,37 @@ export default function WalletProvider({ children }: Props) {
 
   const connectWithKeplr = async () => {
     const client = useClient();
-
+  
     try {
-      const wallet: Wallet = {
-        name: "Keplr Integration",
-        mnemonic: null,
-        HDpath: null,
-        password: null,
-        prefix: client.env.prefix ?? "cosmos",
-        pathIncrement: null,
-        accounts: [],
-      };
-      await client.useKeplr();
-      const [account] = await client.signer.getAccounts();
-      wallet.accounts.push({ address: account.address, pathIncrement: null });
-
+      let wallet: Wallet;
+      if (typeof window.ethereum !== "undefined") {
+        // MetaMask is available
+        await window.ethereum.enable();
+        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+        wallet = {
+          name: "MetaMask Integration",
+          mnemonic: null,
+          HDpath: null,
+          password: null,
+          prefix: client.env.prefix ?? "cosmos",
+          pathIncrement: null,
+          accounts: accounts.map((address: string) => ({ address, pathIncrement: null })),
+        };
+      } else {
+        // Keplr is available
+        await client.useKeplr();
+        const [account] = await client.signer.getAccounts();
+        wallet = {
+          name: "Keplr Integration",
+          mnemonic: null,
+          HDpath: null,
+          password: null,
+          prefix: client.env.prefix ?? "cosmos",
+          pathIncrement: null,
+          accounts: [{ address: account.address, pathIncrement: null }],
+        };
+      }
+  
       setActiveWallet(wallet);
       window.localStorage.setItem("lastWallet", wallet.name);
       if (activeWallet && activeWallet.name && activeWallet.password) {
@@ -62,13 +78,15 @@ export default function WalletProvider({ children }: Props) {
           },
         ]);
       }
-
+  
       setActiveClient(client);
     } catch (e) {
       console.error(e);
     }
+    
     window.localStorage.setItem("wallets", JSON.stringify(wallets));
   };
+  
   const signOut = () => {
     const client = useClient();
     client.removeSigner();
