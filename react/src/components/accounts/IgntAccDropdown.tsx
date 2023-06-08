@@ -41,7 +41,7 @@ export default function IgntAccDropdown(props: IgntAccDropdownProps) {
   const { address, shortAddress } = useAddressContext();
   const ref = useRef<HTMLDivElement>(null);
   const { copy } = useClipboard();
-  const { apiConnected, rpcConnected, wsConnected } = useConnectionStatus();
+  const { apiConnected, rpcConnected, wsConnected, awsConnected, evmosConnected } = useConnectionStatus();
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -120,7 +120,7 @@ export default function IgntAccDropdown(props: IgntAccDropdownProps) {
           </div>
         </div>
       ) : (
-        <div className="top-20 right-8 shadow-std bg-white rounded absolute max-w-xs p-7 z-50 w-full box-border acc-dd">
+        <div className="top-20 right-8 shadow-std bg-white-1000 rounded absolute max-w-xs p-7 z-50 w-full box-border acc-dd">
           <header className="flex items-center -mx-7 -mt-7 px-3 pt-3 pb-7">
             <div
               className="cursor-pointer"
@@ -162,6 +162,18 @@ export default function IgntAccDropdown(props: IgntAccDropdownProps) {
           <div className="flex justify-between items-center">
             <span> WebSocket </span>
             <span> {wsConnected ? "connected" : "disconnected"} </span>
+          </div>
+          <hr className="divide-y -mx-7 my-3" />
+
+          <div className="flex justify-between items-center">
+            <span> LifeDeFied API </span>
+            <span> {awsConnected ? "connected" : "disconnected"} </span>
+          </div>
+          <hr className="divide-y -mx-7 my-3" />
+          
+          <div className="flex justify-between items-center">
+            <span> EVMOs </span>
+            <span> {awsConnected ? "connected" : "disconnected"} </span>
           </div>
         </div>
       )}{" "}

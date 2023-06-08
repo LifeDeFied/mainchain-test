@@ -8,6 +8,9 @@ export const useConnectionStatus = () => {
   const [apiConnected, setApiConnected] = useState(false);
   const [rpcConnected, setRpcConnected] = useState(false);
   const [wsConnected, setWsConnected] = useState(false);
+  const [awsConnected, setAwsConnected] = useState(false);
+  const [evmosConnected, setEvmConnected] = useState(false);
+  
   useEffect(() => {
     setApiConnected(!nodeInfo.error);
   }, [nodeInfo]);
@@ -17,14 +20,18 @@ export const useConnectionStatus = () => {
       await fetch(env.rpcURL);
       setRpcConnected(true);
       setWsConnected(true);
+      setAwsConnected(true);
+      setEvmConnected(true);
     } catch (e) {
       console.error(e);
       setRpcConnected(false);
       setWsConnected(false);
+      setAwsConnected(false);
+      setEvmConnected(false);
     } finally {
       setTimeout(rpcCheck, 10000);
     }
   };
   rpcCheck();
-  return { apiConnected, rpcConnected, wsConnected };
+  return { apiConnected, rpcConnected, wsConnected, awsConnected, evmosConnected };
 };
